@@ -3,7 +3,7 @@ Air Quality Index (AQI) Prediction 🚀
 This project is a Machine Learning-based web application that predicts the Air Quality Index (AQI) of Indian cities using historical air pollution data.
 It helps users understand air quality trends and make better environmental decisions.
 
-Tech Stack 🛠️
+Tech Stack  🛠️
 
 Python
 
