@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Air Quality Prediction</title>
+</head>
+<body>
+    <h1>Air Quality Prediction</h1>
+
+    <form id="cityForm">
+        <h2>City Day Prediction</h2>
+        <label>City: <input type="number" name="City" value="1"></label><br>
+        <label>PM2.5: <input type="number" name="PM2_5" value="60.0"></label><br>
+        <label>PM10: <input type="number" name="PM10" value="100.0"></label><br>
+        <label>NO: <input type="number" name="NO" value="10.0"></label><br>
+        <label>NO2: <input type="number" name="NO2" value="20.0"></label><br>
+        <label>NOx: <input type="number" name="NOx" value="30.0"></label><br>
+        <label>NH3: <input type="number" name="NH3" value="5.0"></label><br>
+        <label>CO: <input type="number" name="CO" value="1.0"></label><br>
+        <label>SO2: <input type="number" name="SO2" value="8.0"></label><br>
+        <label>O3: <input type="number" name="O3" value="15.0"></label><br>
+        <label>Benzene: <input type="number" name="Benzene" value="2.0"></label><br>
+        <label>Toluene: <input type="number" name="Toluene" value="3.0"></label><br>
+        <label>Xylene: <input type="number" name="Xylene" value="1.5"></label><br>
+        <label>AQI_Bucket: <input type="number" name="AQI_Bucket" value="2"></label><br>
+        <button type="submit">Predict City Day AQI</button>
+    </form>
+
+    <p id="cityResult"></p>
+
+    <hr>
+
+    <form id="stationForm">
+        <h2>Station Day Prediction</h2>
+        <!-- Same fields reused -->
+        <!-- You can duplicate the above inputs if needed separately -->
+        <button type="submit">Predict Station Day AQI</button>
+    </form>
+
+    <p id="stationResult"></p>
+
+    <script>
+        const cityForm = document.getElementById('cityForm');
+        cityForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(cityForm);
+            const data = Object.fromEntries(formData.entries());
+            Object.keys(data).forEach(key => data[key] = parseFloat(data[key]));
+
+            const res = await fetch('/predict_city_day/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            document.getElementById('cityResult').innerText = "Predicted AQI: " + result.predicted_AQI;
+        });
+
+        const stationForm = document.getElementById('stationForm');
+        stationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(cityForm); // reuse same inputs
+            const data = Object.fromEntries(formData.entries());
+            Object.keys(data).forEach(key => data[key] = parseFloat(data[key]));
+
+            const res = await fetch('/predict_station_day/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            document.getElementById('stationResult').innerText = "Predicted AQI: " + result.predicted_AQI;
+        });
+    </script>
+</body>
+</html>
